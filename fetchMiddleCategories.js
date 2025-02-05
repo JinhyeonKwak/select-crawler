@@ -5,10 +5,10 @@ const cheerio = require('cheerio');
 
 const largeCategories = ['women', 'men', 'kids', 'beauty', 'life'];
 const baseUrl = "https://display.wconcept.co.kr/category";
-const existByCode = {};
+const existsByCode = {};
 
 const dataDir = path.join(__dirname, 'data');
-const filePath = path.join(dataDir, 'middle_category_data.json');
+const filePath = path.join(dataDir, 'category_data.json');
 
 async function fetchMiddleCategories() {
     const result = [];
@@ -59,8 +59,8 @@ async function fetchSmallCategories(prefix) {
                     if (categoryPath.length >= 4) {
                         const split = urlPath.split('/');
                         const categoryCode = split[split.length - 1];
-                        if (!existByCode[categoryCode]) {
-                            existByCode[categoryCode] = true;
+                        if (!existsByCode[categoryCode]) {
+                            existsByCode[categoryCode] = true;
                             categoryPath.push(categoryCode);
                             result.push(categoryPath);
                         }
@@ -101,8 +101,8 @@ async function fetchSubSmallCategories(prefix) {
                     if (categoryPath.length >= 5) {
                         const split = urlPath.split('/');
                         const categoryCode = split[split.length - 1];
-                        if (!existByCode[categoryCode]) {
-                            existByCode[categoryCode] = true;
+                        if (!existsByCode[categoryCode]) {
+                            existsByCode[categoryCode] = true;
                             categoryPath.push(categoryCode);
                             console.log(`📌 [세부 소분류] ${categoryPath.join(' > ')}`);
                             result.push(categoryPath);
