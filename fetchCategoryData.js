@@ -10,7 +10,7 @@ const existsByCode = {};
 const dataDir = path.join(__dirname, 'data');
 const filePath = path.join(dataDir, 'category_data.json');
 
-async function fetchMiddleCategories() {
+async function fetchCategoryData() {
     const result = [];
 
     try {
@@ -30,7 +30,7 @@ async function fetchMiddleCategories() {
                         }
                     }
                 } catch (error) {
-                    console.error(`❌ [중분류] 요청 실패: ${requestUrl} - ${error.message}`);
+                    console.error(`[중분류] 요청 실패: ${requestUrl} - ${error.message}`);
                 }
 
                 await delay(1000);
@@ -70,7 +70,7 @@ async function fetchSmallCategories(prefix) {
                     }
                 }
             } catch (error) {
-                console.error(`❌ [소분류] 요청 실패: ${requestUrl} - ${error.message}`);
+                console.error(`[소분류] 요청 실패: ${requestUrl} - ${error.message}`);
             }
 
             await delay(1000);
@@ -93,7 +93,7 @@ async function fetchSubSmallCategories(prefix) {
 
             try {
                 const response = await axios.get(requestUrl);
-                console.log(`✅ [세부 소분류] 응답 상태: ${response.status}`);
+                console.log(`[세부 소분류] 응답 상태: ${response.status}`);
 
                 if (response.status === 200) {
                     const categoryPath = parseCategoryPath(response);
@@ -104,13 +104,13 @@ async function fetchSubSmallCategories(prefix) {
                         if (!existsByCode[categoryCode]) {
                             existsByCode[categoryCode] = true;
                             categoryPath.push(categoryCode);
-                            console.log(`📌 [세부 소분류] ${categoryPath.join(' > ')}`);
+                            console.log(`[세부 소분류] ${categoryPath.join(' > ')}`);
                             result.push(categoryPath);
                         }
                     }
                 }
             } catch (error) {
-                console.error(`❌ [세부 소분류] 요청 실패: ${requestUrl} - ${error.message}`);
+                console.error(`[세부 소분류] 요청 실패: ${requestUrl} - ${error.message}`);
             }
 
             await delay(1000);
@@ -147,9 +147,9 @@ function saveToFile(data) {
         }
 
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-        console.log("✅ 파일 저장 성공:", filePath);
+        console.log("파일 저장 성공:", filePath);
     } catch (error) {
-        console.error(`❌ 파일 저장 실패: ${error.message}`);
+        console.error(`파일 저장 실패: ${error.message}`);
     }
 }
 
@@ -158,8 +158,8 @@ function delay(ms) {
 }
 
 (async () => {
-    console.log("🚀 [크롤링 시작]");
-    const middleCategoryInfo = await fetchMiddleCategories();
-    saveToFile(middleCategoryInfo);
-    console.log("🏁 [크롤링 완료]");
+    console.log("[크롤링 시작]");
+    const categoryData = await fetchCategoryData();
+    saveToFile(categoryData);
+    console.log("[크롤링 완료]");
 })();

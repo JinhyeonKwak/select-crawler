@@ -30,6 +30,5 @@ for (const item of extracted) {
         temp = [];
     }
 }
-result.push(temp);
 
 fs.writeFileSync(writeFilePath, JSON.stringify(result, null, 2), 'utf8');
